@@ -1,0 +1,25 @@
+- name: Set upload validation URL
+  ansible.builtin.set_fact:
+    upload_validation_url: "https://access.redhat.com/hydra/rest/cases/{{ case_number }}/attachments/{{ attachment_id }}/status?redhat_client={{ client_id }}"
+
+- name: Validate file upload
+  ansible.builtin.uri:
+    url: "{{ upload_validation_url }}"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ access_token }}"
+      Accept: "application/json"
+    return_content: true
+  register: validation_response
+  retries: 10
+  delay: 60
+  until: validation_response.json.status == "COMPLETED"
+  failed_when: validation_response.json.status != "COMPLETED"
+
+
+- name: Debug validation response
+  ansible.builtin.debug:
+    msg:
+      - "Validation Response Status: {{ validation_response.status }}"
+      - "Validation Response Body: {{ validation_response.json }}"
+  when: debug_enabled

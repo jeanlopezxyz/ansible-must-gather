@@ -1,0 +1,13 @@
+---
+# ansible-navigator run playbooks/generate_must_gather.yaml --pae false --mode stdout --eei quay.io/jealopez/ee-ocp:1.0 --vault-password-file=vars/credentials.vault.yaml
+
+- name: Generate Must Gather
+  hosts: localhost
+  gather_facts: False
+
+  vars_files:
+    - ../vars/credentials.vault.yaml
+
+  roles:
+    - auth_ocp
+    - generate_must_gather

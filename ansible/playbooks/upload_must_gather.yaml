@@ -1,0 +1,15 @@
+---
+# ansible-navigator run playbooks/upload_must_gather.yaml --pae false --mode stdout --eei quay.io/jealopez/ee-ocp:1.0 --vault-password-file=vars/credentials.vault.yaml
+- name: Upload Must Gather to Case Red Hat
+  hosts: localhost
+  gather_facts: False
+
+  vars_files:
+    - ../vars/credentials.vault.yaml
+    - ../vars/main.yaml
+
+  roles:
+    - auth_api
+    - case_management
+    - file_upload
+    - validate_upload

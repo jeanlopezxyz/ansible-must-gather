@@ -1,0 +1,8 @@
+- name: Log in to OpenShift cluster
+  ansible.builtin.command:
+    cmd: >
+      oc login --insecure-skip-tls-verify {{ ocp_url }}
+      -u {{ ocp_user }} -p {{ ocp_password }}
+  register: login_result
+  failed_when: login_result.rc != 0
+  changed_when: false

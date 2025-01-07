@@ -1,0 +1,26 @@
+- name: Retrieve API token
+  ansible.builtin.uri:
+    url: "{{ token_url }}"
+    method: POST
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+    body:
+      grant_type: "refresh_token"
+      refresh_token: "{{ refresh_token }}"
+      client_id: "{{ client_id }}"
+    body_format: form-urlencoded
+    return_content: true
+  register: token_response
+
+- name: Debug API token response
+  ansible.builtin.debug:
+    msg:
+      - "Token Response Status: {{ token_response.status }}"
+      - "Token Response Body: {{ token_response.json }}"
+  when: debug_enabled
+
+- name: Extract access token
+  ansible.builtin.set_fact:
+    access_token: "{{ token_response.json.access_token }}"
+
+

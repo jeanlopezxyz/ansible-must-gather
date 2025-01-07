@@ -1,0 +1,12 @@
+# Ignorar la carpeta logs
+logs/
+
+# Ignorar la carpeta context dentro de ee-ocp
+execution-environment/ee-ocp/context/
+
+# Ignorar archivos específicos
+ansible/vars/credentials.vault.yaml
+ansible/vars/main.yaml
+
+# Contraseña vault
+vault_password

@@ -1,0 +1,9 @@
+---
+
+# ansible-navigator run main.yaml --pae false --mode stdout --eei quay.io/jealopez/ee-ocp:1.0 --vault-password-file=vault_password
+
+- name: Generate Musth Gather
+  import_playbook: playbooks/generate_must_gather.yaml
+
+- name: Upload Musth Gather to Case Red Hat
+  import_playbook: playbooks/upload_must_gather.yaml

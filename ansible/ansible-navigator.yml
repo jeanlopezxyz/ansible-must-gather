@@ -1,0 +1,5 @@
+ansible-navigator:
+  logging:
+    append: true
+    file: ../logs/ansible-navigator.log
+    level: debug

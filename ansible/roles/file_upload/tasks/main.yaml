@@ -1,0 +1,64 @@
+- name: Get file size in bytes
+  ansible.builtin.stat:
+    path: "{{ file_path }}"
+  register: file_stat
+
+- name: Debug file path
+  ansible.builtin.debug:
+    msg: "File path: {{ file_path }}"
+
+- name: Retrieve bucket information
+  ansible.builtin.uri:
+    url: "{{ bucket_url }}"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ access_token }}"
+      Content-Type: "application/json"
+    body:
+      description: ""
+      fileName: "{{ file_path | basename }}"
+      isPrivate: false
+      size: "{{ file_stat.stat.size }}"
+    body_format: json
+    return_content: true
+  register: bucket_response
+
+- name: Debug bucket response
+  ansible.builtin.debug:
+    msg:
+      - "Bucket Response Status: {{ bucket_response.status }}"
+      - "Bucket Response Body: {{ bucket_response.json }}"
+  when: debug_enabled and continue_execution
+
+- name: Extract bucket details
+  ansible.builtin.set_fact:
+    bucket_name: "{{ bucket_response.json.bucketName }}"
+    access_key: "{{ bucket_response.json.accessKey }}"
+    secret_key: "{{ bucket_response.json.secretKey }}"
+    session_token: "{{ bucket_response.json.sessionToken }}"
+    region: "{{ bucket_response.json.region }}"
+    key: "{{ bucket_response.json.key }}"
+    attachment_id: "{{ bucket_response.json.attachmentId }}"
+
+- name: Execute Python script with bucket details
+  ansible.builtin.command:
+    cmd: >
+      python3 {{ script_path }}
+      --bucket-name "{{ bucket_name }}"
+      --file-name "{{ file_path }}"
+      --key "{{ key }}"
+      --access-key "{{ access_key }}"
+      --secret-key "{{ secret_key }}"
+      --session-token "{{ session_token }}"
+      --region "{{ region }}"
+      --file-size "{{ file_stat.stat.size }}"
+  register: script_output
+  changed_when: script_output.rc != 0
+  when: continue_execution
+
+- name: Debug script output
+  ansible.builtin.debug:
+    msg:
+      - "STDOUT: {{ script_output.stdout }}"
+      - "STDERR: {{ script_output.stderr }}"
+  when: debug_enabled and continue_execution

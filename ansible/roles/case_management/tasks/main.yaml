@@ -1,0 +1,26 @@
+- name: Retrieve case details
+  ansible.builtin.uri:
+    url: "{{ case_details_url }}"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ access_token }}"
+      Accept: "application/json"
+    return_content: true
+  register: case_response
+
+- name: Debug case details
+  ansible.builtin.debug:
+    msg:
+      - "Case Response Status: {{ case_response.status }}"
+      - "Case Response Body: {{ case_response.json }}"
+  when: debug_enabled
+
+- name: Check if case exists and is not closed
+  ansible.builtin.set_fact:
+    continue_execution: "{{ case_response.json.status != 'Closed' }}"
+  when: case_response.status == 200
+
+- name: Stop execution if case is closed
+  ansible.builtin.fail:
+    msg: "Case {{ case_number }} is closed. Stopping execution."
+  when: not continue_execution
