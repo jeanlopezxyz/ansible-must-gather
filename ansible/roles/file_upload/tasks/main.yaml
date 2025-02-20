@@ -1,34 +1,43 @@
-- name: Get file size in bytes
+---
+- name: Ensure must-gather archive exists
   ansible.builtin.stat:
-    path: "{{ file_path }}"
+    path: "{{ must_gather_tar }}"
   register: file_stat
+
+- name: Fail if must-gather archive is missing
+  ansible.builtin.fail:
+    msg: "Must-gather archive not found at {{ must_gather_tar }}"
+  when: not file_stat.stat.exists
 
 - name: Debug file path
   ansible.builtin.debug:
-    msg: "File path: {{ file_path }}"
+    msg: "File path: {{ must_gather_tar }}"
+  when: enable_debug | default(false)
 
 - name: Retrieve bucket information
   ansible.builtin.uri:
-    url: "{{ bucket_url }}"
+    url: "{{ support_case_upload_url }}"
     method: POST
     headers:
       Authorization: "Bearer {{ access_token }}"
       Content-Type: "application/json"
     body:
       description: ""
-      fileName: "{{ file_path | basename }}"
+      fileName: "{{ must_gather_tar | basename }}"
       isPrivate: false
       size: "{{ file_stat.stat.size }}"
     body_format: json
     return_content: true
   register: bucket_response
+  no_log: true
+  when: continue_execution
 
-- name: Debug bucket response
-  ansible.builtin.debug:
-    msg:
-      - "Bucket Response Status: {{ bucket_response.status }}"
-      - "Bucket Response Body: {{ bucket_response.json }}"
-  when: debug_enabled and continue_execution
+- name: Ensure bucket response is valid
+  ansible.builtin.fail:
+    msg: "Failed to retrieve bucket details. Response: {{ bucket_response.json }}"
+  when:
+    - continue_execution
+    - bucket_response.status != 200
 
 - name: Extract bucket details
   ansible.builtin.set_fact:
@@ -43,9 +52,9 @@
 - name: Execute Python script with bucket details
   ansible.builtin.command:
     cmd: >
-      python3 {{ script_path }}
+      python3 "{{ role_path }}/scripts/upload_to_s3.py"
       --bucket-name "{{ bucket_name }}"
-      --file-name "{{ file_path }}"
+      --file-name "{{ must_gather_tar }}"
       --key "{{ key }}"
       --access-key "{{ access_key }}"
       --secret-key "{{ secret_key }}"
@@ -54,6 +63,8 @@
       --file-size "{{ file_stat.stat.size }}"
   register: script_output
   changed_when: script_output.rc != 0
+  failed_when: script_output.rc is defined and script_output.rc != 0
+  # no_log: true
   when: continue_execution
 
 - name: Debug script output
@@ -61,4 +72,4 @@
     msg:
       - "STDOUT: {{ script_output.stdout }}"
       - "STDERR: {{ script_output.stderr }}"
-  when: debug_enabled and continue_execution
+  when: enable_debug | default(false) and continue_execution

@@ -1,6 +1,10 @@
-2025-01-07 00:22:54,390 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/04021623/attachments/8a5ef7bd-8a28-4755-b6ff-cc8e157c5798'.
-2025-01-07 00:22:54,390 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/case_must_gather/ansible/playbooks/upload_to_s3.log
-2025-01-07 05:24:50,645 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/04021623/attachments/f02e7387-59c3-4f9a-b66e-dc0f83a1bf59'.
-2025-01-07 05:24:50,645 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/ansible-must-gather/ansible/playbooks/upload_to_s3.log
-2025-01-07 05:43:35,050 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/04021623/attachments/653d13c9-a9be-4fc8-9436-63144c73abb4'.
-2025-01-07 05:43:35,050 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/ansible-must-gather/ansible/playbooks/upload_to_s3.log
+2025-02-20 13:05:32,123 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/03198222/attachments/e45e11a7-ae6b-46de-bf1d-52a09c623efb'.
+2025-02-20 13:05:32,123 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/ansible-must-gather/ansible/playbooks/upload_to_s3.log
+2025-02-20 13:10:35,141 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/03198222/attachments/5fa81514-675f-4c84-8cc2-4e0c0707d2b5'.
+2025-02-20 13:10:35,141 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/ansible-must-gather/ansible/playbooks/upload_to_s3.log
+2025-02-20 19:02:09,528 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/03198222/attachments/9c475b76-d276-4693-b767-ad26d4ad84a2'.
+2025-02-20 19:02:09,528 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/ansible-must-gather/ansible/playbooks/upload_to_s3.log
+2025-02-20 19:13:51,690 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/03198222/attachments/19ec1eda-64c4-48cf-bb92-1b4d0f57a12d'.
+2025-02-20 19:13:51,690 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/ansible-must-gather/ansible/playbooks/upload_to_s3.log
+2025-02-20 19:57:58,219 - INFO - Archivo '/tmp/must-gather.tar.gz' subido correctamente a 'rh-case-attachments/data/files/content/cases/03198222/attachments/e9e395bc-dda4-4eb4-a507-0f941fc23ecd'.
+2025-02-20 19:57:58,220 - INFO - Logs guardados en: /home/jeanlopez/Documentos/redhat/proyectos/claro-chile/07.AAP/case_must_gather/ansible-must-gather/ansible/playbooks/upload_to_s3.log

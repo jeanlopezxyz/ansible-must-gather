@@ -1,0 +1,49 @@
+---
+- name: Run must-gather command
+  ansible.builtin.command:
+    cmd: >
+      oc adm must-gather
+      --dest-dir={{ must_gather_dir }}
+      --server={{ openshift_api_url }}
+      --token={{ openshift_api_token }}
+      --insecure-skip-tls-verify
+  register: must_gather_result
+  changed_when: false
+  failed_when: must_gather_result.rc != 0
+  no_log: true
+
+- name: Ensure must-gather directory exists
+  ansible.builtin.stat:
+    path: "{{ must_gather_dir }}"
+  register: must_gather_stat
+
+- name: Fail if must-gather directory was not created
+  ansible.builtin.fail:
+    msg: "The must-gather directory was not created at {{ must_gather_dir }}."
+  when: not must_gather_stat.stat.exists
+
+- name: Compress must-gather directory into must-gather.tar.gz
+  ansible.builtin.archive:
+    path: "{{ must_gather_dir }}"
+    dest: "{{ must_gather_tar }}"
+    format: gz
+  register: archive_result
+  changed_when: archive_result.changed
+  failed_when: not archive_result.dest is defined
+
+- name: Debug success message
+  ansible.builtin.debug:
+    msg: "Must-gather directory compressed successfully into {{ must_gather_tar }}"
+  when: enable_debug | default(false)
+
+- name: Verify compressed file exists
+  ansible.builtin.stat:
+    path: "{{ must_gather_tar }}"
+  register: compressed_file
+
+- name: Debug compressed file details
+  ansible.builtin.debug:
+    msg:
+      - "Compressed file exists: {{ compressed_file.stat.exists }}"
+      - "Compressed file size: {{ compressed_file.stat.size | default(0) }}"
+  when: enable_debug | default(false)

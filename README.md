@@ -56,8 +56,7 @@ ocp_user: "<USER_OCP>"
 ocp_password: "<PASSWORD_OCP>"
 ocp_url: "https://<API_OPENSHIFT>:6443"
 
-#Token
-refresh_token: <TOKEN_API>
+api_refresh_token: "<TOKEN_API>"
 ```
 
 ### Obtener el Token de Acceso
@@ -69,7 +68,8 @@ refresh_token: <TOKEN_API>
 
 1. Protege las credenciales utilizando Ansible Vault para evitar exponer información sensible:
    ```bash
-   ansible-vault encrypt vars/credentials.yaml
+   ansible-vault encrypt credentials.vault.yaml
+   ansible-vault view credentials.vault.yaml --vault-password-file=vault_password
    ```
 2. Crea un archivo llamado `vault_password` que contenga la contraseña del vault para que pueda ser utilizada durante la ejecución del playbook.
    ```bash

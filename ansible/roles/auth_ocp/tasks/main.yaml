@@ -1,8 +1,14 @@
-- name: Log in to OpenShift cluster
-  ansible.builtin.command:
-    cmd: >
-      oc login --insecure-skip-tls-verify {{ ocp_url }}
-      -u {{ ocp_user }} -p {{ ocp_password }}
-  register: login_result
-  failed_when: login_result.rc != 0
-  changed_when: false
+---
+- name: Autenticarse en OpenShift y obtener un token
+  redhat.openshift.openshift_auth:
+    host: "{{ openshift_api_url }}"
+    username: "{{ openshift_username }}"
+    password: "{{ openshift_password }}"
+    validate_certs: false
+  register: openshift_auth_results
+  no_log: true  # 🔹 Oculta credenciales en logs
+
+- name: Guardar el token para su uso posterior
+  ansible.builtin.set_fact:
+    openshift_api_token: "{{ openshift_auth_results.openshift_auth.api_key }}"
+  when: openshift_auth_results.openshift_auth.api_key is defined

@@ -1,0 +1,12 @@
+# group_vars/all/vars.yaml
+openshift_api_url: "https://api.acm.labjp.xyz:6443"
+support_case_id: "03198222"
+enable_debug: false
+
+must_gather_dir: "/tmp/must-gather"
+must_gather_tar: "/tmp/must-gather.tar.gz"
+upload_script_path: "{{ playbook_dir }}/scripts/upload_to_s3.py"
+
+sso_token_endpoint: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
+support_case_details_url: "https://api.access.redhat.com/support/v1/cases/{{ support_case_id }}"
+support_case_upload_url: "https://access.redhat.com/hydra/rest/cases/{{ support_case_id }}/attachments/upload/credentials"

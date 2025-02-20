@@ -1,6 +1,7 @@
+---
 - name: Set upload validation URL
   ansible.builtin.set_fact:
-    upload_validation_url: "https://access.redhat.com/hydra/rest/cases/{{ case_number }}/attachments/{{ attachment_id }}/status?redhat_client={{ client_id }}"
+    upload_validation_url: "https://access.redhat.com/hydra/rest/cases/{{ support_case_id }}/attachments/{{ attachment_id }}/status?redhat_client={{ client_id }}"
 
 - name: Validate file upload
   ansible.builtin.uri:
@@ -13,13 +14,13 @@
   register: validation_response
   retries: 10
   delay: 60
-  until: validation_response.json.status == "COMPLETED"
-  failed_when: validation_response.json.status != "COMPLETED"
-
+  until: validation_response.json is defined and validation_response.json.status == "COMPLETED"
+  failed_when: validation_response.json is not defined or validation_response.json.status not in ["COMPLETED"]
+  no_log: true  # 🔹 Evita exponer credenciales en logs
 
 - name: Debug validation response
   ansible.builtin.debug:
     msg:
       - "Validation Response Status: {{ validation_response.status }}"
-      - "Validation Response Body: {{ validation_response.json }}"
-  when: debug_enabled
+      - "Validation Response Body: {{ validation_response.json | to_nice_json }}"
+  when: enable_debug | default(false)

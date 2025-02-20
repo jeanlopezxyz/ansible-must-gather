@@ -1,26 +1,31 @@
+---
 - name: Retrieve API token
   ansible.builtin.uri:
-    url: "{{ token_url }}"
+    url: "{{ sso_token_endpoint }}"
     method: POST
     headers:
       Content-Type: "application/x-www-form-urlencoded"
     body:
       grant_type: "refresh_token"
-      refresh_token: "{{ refresh_token }}"
+      refresh_token: "{{ api_refresh_token }}"
       client_id: "{{ client_id }}"
     body_format: form-urlencoded
     return_content: true
   register: token_response
+  # no_log: true
 
-- name: Debug API token response
-  ansible.builtin.debug:
-    msg:
-      - "Token Response Status: {{ token_response.status }}"
-      - "Token Response Body: {{ token_response.json }}"
-  when: debug_enabled
+- name: Ensure API token response is valid
+  ansible.builtin.fail:
+    msg: "Failed to retrieve access token. Response: {{ token_response.json }}"
+  when: token_response.status != 200 or "access_token" not in token_response.json
 
 - name: Extract access token
   ansible.builtin.set_fact:
     access_token: "{{ token_response.json.access_token }}"
 
-
+- name: Debug API token response (optional)
+  ansible.builtin.debug:
+    msg:
+      - "Token Response Status: {{ token_response.status }}"
+      - "Token retrieved successfully."
+  when: enable_debug | default(false)
