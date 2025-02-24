@@ -11,7 +11,7 @@
 
   vars_files:
     - group_vars/all.yaml
-    - credentials.vault.yaml
+    - ../credentials.vault.yaml
 
   roles:
     - role: auth_api
