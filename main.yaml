@@ -34,6 +34,13 @@
       when: vault_file.stat.exists
       register: vault_content
 
+    - name: Mostrar resultados
+      debug:
+        msg:
+          - "Contenido del repositorio: {{ repo_content.stdout_lines }}"
+          - "Estructura del repositorio: {{ repo_structure.stdout_lines }}"
+          - "Contenido de credentials.vault.yaml: {{ vault_content.stdout_lines | default('Archivo no encontrado') }}"
+
 
     - name: Cerrar sesión en OpenShift
       block:
