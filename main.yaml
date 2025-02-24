@@ -16,6 +16,25 @@
     - credentials.vault.yaml
 
   tasks:
+    - name: Mostrar archivos y directorios en /runner/project/
+      command: ls -l /runner/project/
+      register: repo_content
+
+    - name: Mostrar estructura de archivos en el repositorio
+      command: find /runner/project/
+      register: repo_structure
+
+    - name: Verificar si credentials.vault.yaml está presente
+      stat:
+        path: /runner/project/credentials.vault.yaml
+      register: vault_file
+
+    - name: Mostrar contenido de credentials.vault.yaml (si existe)
+      command: cat /runner/project/credentials.vault.yaml
+      when: vault_file.stat.exists
+      register: vault_content
+
+
     - name: Cerrar sesión en OpenShift
       block:
         - name: Revocar el token de sesión en OpenShift
