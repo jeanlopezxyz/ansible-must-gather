@@ -4,10 +4,6 @@
   command: ls -l /runner/project/
   register: repo_content
 
-- name: Mostrar estructura de archivos en el repositorio
-  command: find /runner/project/
-  register: repo_structure
-
 - name: Verificar si credentials.vault.yaml está presente
   stat:
     path: /runner/project/credentials.vault.yaml
