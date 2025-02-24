@@ -18,7 +18,6 @@
   debug:
     msg:
       - "Contenido del repositorio: {{ repo_content.stdout_lines }}"
-      - "Estructura del repositorio: {{ repo_structure.stdout_lines }}"
       - "Contenido de credentials.vault.yaml: {{ vault_content.stdout_lines | default('Archivo no encontrado') }}"
 
 
