@@ -11,9 +11,9 @@
 - name: Cerrar sesión en OpenShift (revocar token)
   hosts: localhost
   gather_facts: false
-  vars_files:
-    - ../group_vars/all.yaml
-    - ../credentials.vault.yaml
+  # vars_files:
+  #   - group_vars/all.yaml
+  #   - credentials.vault.yaml
   tasks:
     - name: Cerrar sesión en OpenShift
       block:
