@@ -12,12 +12,9 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-    - group_vars/all.yaml
-    - credentials.vault.yaml
-
+    - ../group_vars/all.yaml
+    - ../credentials.vault.yaml
   tasks:
-
-
     - name: Cerrar sesión en OpenShift
       block:
         - name: Revocar el token de sesión en OpenShift
