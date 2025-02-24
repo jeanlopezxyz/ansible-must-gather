@@ -6,7 +6,7 @@
     password: "{{ openshift_password }}"
     validate_certs: false
   register: openshift_auth_results
-  no_log: true  # 🔹 Oculta credenciales en logs
+  # no_log: true
 
 - name: Guardar el token para su uso posterior
   ansible.builtin.set_fact:

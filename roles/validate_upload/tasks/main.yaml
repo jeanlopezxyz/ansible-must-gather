@@ -16,7 +16,7 @@
   delay: 60
   until: validation_response.json is defined and validation_response.json.status == "COMPLETED"
   failed_when: validation_response.json is not defined or validation_response.json.status not in ["COMPLETED"]
-  no_log: true  # 🔹 Evita exponer credenciales en logs
+  # no_log: true
 
 - name: Debug validation response
   ansible.builtin.debug:

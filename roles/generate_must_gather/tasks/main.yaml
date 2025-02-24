@@ -10,7 +10,7 @@
   register: must_gather_result
   changed_when: false
   failed_when: must_gather_result.rc != 0
-  no_log: true
+  # no_log: true
 
 - name: Ensure must-gather directory exists
   ansible.builtin.stat:
