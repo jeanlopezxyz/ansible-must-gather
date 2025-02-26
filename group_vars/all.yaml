@@ -1,6 +1,20 @@
 # group_vars/all/vars.yaml
+
+cluster_api:
+  "PCRF Producción Corporativo": "https://api.pcrf.corp.labjp.xyz:6443"
+  "PCRF Producción Liray": "https://api.pcrf.liray.labjp.xyz:6443"
+  "PCRF Maqueta Corporativo": "https://api.pcrf.maqueta.labjp.xyz:6443"
+  "PCRF Maqueta Liray 1": "https://api.pcrf.maqueta1.labjp.xyz:6443"
+  "PCRF Maqueta Liray 2": "https://api.pcrf.maqueta2.labjp.xyz:6443"
+  "PCRF Maqueta Liray 3": "https://api.pcrf.maqueta3.labjp.xyz:6443"
+  "RADIUS Producción Corporativo": "https://api.radius.corp.labjp.xyz:6443"
+  "RADIUS Producción Liray": "https://api.radius.liray.labjp.xyz:6443"
+  "MCPTT Producción Corporativo": "https://api.mcptt.corp.labjp.xyz:6443"
+  "MCPTT Producción Liray": "https://api.mcptt.liray.labjp.xyz:6443"
+  "LABJP": "https://api.acm.labjp.xyz:6443"
+
 openshift_api_url: "https://api.acm.labjp.xyz:6443"
-support_case_id: "03198222"
+support_case_id: "{{ support_case_id }}"
 enable_debug: false
 
 must_gather_dir: "/tmp/must-gather"

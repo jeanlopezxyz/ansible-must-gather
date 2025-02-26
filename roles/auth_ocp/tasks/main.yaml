@@ -1,31 +1,16 @@
 ---
-
-- name: Mostrar archivos y directorios en /runner/project/
-  command: ls -l /runner/project/
-  register: repo_content
-
-- name: Verificar si credentials.vault.yaml está presente
-  stat:
-    path: /runner/project/credentials.vault.yaml
-  register: vault_file
-
-- name: Mostrar contenido de credentials.vault.yaml (si existe)
-  command: cat /runner/project/credentials.vault.yaml
-  when: vault_file.stat.exists
-  register: vault_content
-
-- name: Mostrar resultados
-  debug:
-    msg:
-      - "Contenido del repositorio: {{ repo_content.stdout_lines }}"
-      - "Contenido de credentials.vault.yaml: {{ vault_content.stdout_lines | default('Archivo no encontrado') }}"
-
+- name: Obtener API y Token del clúster seleccionado
+  ansible.builtin.set_fact:
+    openshift_api_url: "{{ cluster_api[cluster].api_url }}"
+    openshift_token: "{{ cluster_tokens[cluster] }}"
 
 - name: Autenticarse en OpenShift y obtener un token
   redhat.openshift.openshift_auth:
+    # host: "{{ openshift_api_url }}"
     host: "{{ openshift_api_url }}"
-    username: "{{ openshift_username }}"
-    password: "{{ openshift_password }}"
+    api_key: "{{ openshift_token }}"
+    # username: "{{ openshift_username }}"
+    # password: "{{ openshift_password }}"
     validate_certs: false
   register: openshift_auth_results
   # no_log: true
