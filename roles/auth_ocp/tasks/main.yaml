@@ -4,6 +4,15 @@
     openshift_api_url: "{{ cluster_api[cluster] }}"
     openshift_token: "{{ cluster_tokens[cluster] }}"
 
+- name: Verificar autenticación en OpenShift
+  ansible.builtin.sdebug:
+    msg: "Autenticación exitosa. Token obtenido: {{ openshift_token }}"
+
+- name: Verificar api en OpenShift
+  ansible.builtin.sdebug:
+    msg: "Autenticación exitosa. Token obtenido: {{ openshift_api_url }}"
+
+
 - name: Autenticarse en OpenShift y obtener un token
   redhat.openshift.openshift_auth:
     # host: "{{ openshift_api_url }}"
