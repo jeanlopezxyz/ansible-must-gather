@@ -1,7 +1,7 @@
 ---
 - name: Obtener API y Token del clúster seleccionado
   ansible.builtin.set_fact:
-    openshift_api_url: "{{ cluster_api[cluster].api_url }}"
+    openshift_api_url: "{{ cluster_api[cluster] }}"
     openshift_token: "{{ cluster_tokens[cluster] }}"
 
 - name: Autenticarse en OpenShift y obtener un token
