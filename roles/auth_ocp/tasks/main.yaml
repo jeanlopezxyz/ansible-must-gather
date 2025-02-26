@@ -2,7 +2,8 @@
 - name: Obtener API y Token del clúster seleccionado
   ansible.builtin.set_fact:
     openshift_api_url: "{{ cluster_api[cluster] }}"
-    openshift_token: "{{ cluster_tokens[cluster] }}"
+    openshift_username: "{{ cluster_auth[cluster].username }}"
+    openshift_password: "{{ cluster_auth[cluster].password }}"
 
 - name: Verificar autenticación en OpenShift
   ansible.builtin.debug:
@@ -11,7 +12,6 @@
 - name: Verificar api en OpenShift
   ansible.builtin.debug:
     msg: "Autenticación exitosa. Token obtenido: {{ openshift_api_url }}"
-
 
 - name: Autenticarse en OpenShift y obtener un token
   redhat.openshift.openshift_auth:
