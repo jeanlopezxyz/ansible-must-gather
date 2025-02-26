@@ -5,11 +5,11 @@
     openshift_token: "{{ cluster_tokens[cluster] }}"
 
 - name: Verificar autenticación en OpenShift
-  ansible.builtin.sdebug:
+  ansible.builtin.debug:
     msg: "Autenticación exitosa. Token obtenido: {{ openshift_token }}"
 
 - name: Verificar api en OpenShift
-  ansible.builtin.sdebug:
+  ansible.builtin.debug:
     msg: "Autenticación exitosa. Token obtenido: {{ openshift_api_url }}"
 
 
