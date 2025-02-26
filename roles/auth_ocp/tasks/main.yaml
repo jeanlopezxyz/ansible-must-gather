@@ -7,7 +7,7 @@
 
 - name: Verificar autenticación en OpenShift
   ansible.builtin.debug:
-    msg: "Autenticación exitosa. Token obtenido: {{ openshift_token }}"
+    msg: "Autenticación exitosa. Token obtenido: {{ openshift_username }}"
 
 - name: Verificar api en OpenShift
   ansible.builtin.debug:
@@ -17,9 +17,9 @@
   redhat.openshift.openshift_auth:
     # host: "{{ openshift_api_url }}"
     host: "{{ openshift_api_url }}"
-    api_key: "{{ openshift_token }}"
-    # username: "{{ openshift_username }}"
-    # password: "{{ openshift_password }}"
+    # api_key: "{{ openshift_token }}"
+    username: "{{ openshift_username }}"
+    password: "{{ openshift_password }}"
     validate_certs: false
   register: openshift_auth_results
   # no_log: true
