@@ -1,5 +1,7 @@
 ---
-# ansible-navigator run main.yaml -i inventory.yaml --pae false --mode stdout \
+# ansible-navigator run main.yaml -i inventory.yaml --pae false --mode stdout --eei quay.io/jealopez/ee-ocp:1.3 -e "@credentials.vault.yaml" -e "cluster=LABJP" --vault-password-file=vault_password
+
+
 # --eei quay.io/jealopez/ee-ocp:1.3 -e "@credentials.vault.yaml" --vault-password-file=vault_password
 
 - name: Ejecutar Must Gather
