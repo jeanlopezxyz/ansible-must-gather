@@ -15,7 +15,7 @@ cluster_api:
 
 openshift_api_url: "https://api.acm.labjp.xyz:6443"
 support_case_id: "{{ support_case_id }}"
-enable_debug: false
+enable_debug: true
 
 must_gather_dir: "/tmp/must-gather"
 must_gather_tar: "/tmp/must-gather.tar.gz"
