@@ -1,1 +1,0 @@
-oc get secret account-ansible -n default -o jsonpath="{.data.token}" | base64 -d

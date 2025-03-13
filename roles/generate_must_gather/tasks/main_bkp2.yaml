@@ -1,6 +1,6 @@
 ---
 
-# 1️⃣ Crear el Namespace donde se ejecutará must-gather
+# Crear el Namespace donde se ejecutará must-gather
 - name: Create namespace for must-gather
   kubernetes.core.k8s:
     host: "{{ openshift_api_url }}"
@@ -13,7 +13,7 @@
       metadata:
         name: must-gather-temp
 
-# 2️⃣ Crear el ServiceAccount para must-gather
+# Crear el ServiceAccount para must-gather
 - name: Create ServiceAccount for must-gather
   kubernetes.core.k8s:
     host: "{{ openshift_api_url }}"
@@ -27,7 +27,7 @@
         name: must-gather-sa
         namespace: must-gather-temp
 
-# 3️⃣ Otorgar permisos de cluster-admin al ServiceAccount
+# Otorgar permisos de cluster-admin al ServiceAccount
 - name: Grant cluster-admin role to must-gather ServiceAccount
   kubernetes.core.k8s:
     host: "{{ openshift_api_url }}"
@@ -48,7 +48,7 @@
         name: cluster-admin
         apiGroup: rbac.authorization.k8s.io
 
-# 4️⃣ Crear el Pod admin-cli con la imagen OpenShift CLI
+# Crear el Pod admin-cli con la imagen OpenShift CLI
 - name: Deploy admin-cli pod for must-gather
   kubernetes.core.k8s:
     host: "{{ openshift_api_url }}"
@@ -69,7 +69,7 @@
             image: quay.io/openshift-release-dev/ocp-v4.0-art-dev:latest
             command: ["/bin/sh", "-c", "sleep 3600"]
 
-# 5️⃣ Esperar hasta que el pod esté en estado Running
+# Esperar hasta que el pod esté en estado Running
 - name: Wait for admin-cli pod to be running
   kubernetes.core.k8s_info:
     host: "{{ openshift_api_url }}"
@@ -83,7 +83,7 @@
   delay: 5
   until: pod_status.resources[0].status.phase == "Running"
 
-# 6️⃣ Ejecutar must-gather dentro del pod
+# Ejecutar must-gather dentro del pod
 - name: Execute must-gather in the 'admin-cli' pod
   kubernetes.core.k8s_exec:
     host: "{{ openshift_api_url }}"
@@ -93,12 +93,13 @@
     pod: "admin-cli"
     container: "admin-cli"
     command: "/bin/sh"
-    stdin: "oc adm must-gather --dest-dir=/tmp/must-gather"
+    stdin: "{{ must_gather_command }} --dest-dir=/tmp/must-gather"
   register: must_gather_result
   changed_when: false
   failed_when: must_gather_result.rc is defined and must_gather_result.rc != 0
 
-# 7️⃣ Verificar que el directorio must-gather se creó correctamente
+
+# Verificar que el directorio must-gather se creó correctamente
 - name: Check if must-gather directory exists
   kubernetes.core.k8s_exec:
     host: "{{ openshift_api_url }}"
@@ -112,7 +113,7 @@
   changed_when: false
   failed_when: "'No such file or directory' in must_gather_stat.stdout"
 
-# 8️⃣ Comprimir los datos dentro del pod
+# Comprimir los datos dentro del pod
 - name: Compress must-gather directory inside pod
   kubernetes.core.k8s_exec:
     host: "{{ openshift_api_url }}"
@@ -126,7 +127,7 @@
   changed_when: archive_result.rc == 0
   failed_when: archive_result.rc != 0
 
-# 9️⃣ Copiar el archivo comprimido a la máquina local
+# Copiar el archivo comprimido a la máquina local
 - name: Copy must-gather tarball from pod to local machine
   ansible.builtin.shell: >-
     oc cp must-gather-temp/admin-cli:/tmp/must-gather.tar.gz /tmp/must-gather.tar.gz
@@ -134,7 +135,7 @@
   changed_when: false
   failed_when: copy_result.rc != 0
 
-# 🔟 Verificar que el archivo comprimido existe en la máquina local
+# Verificar que el archivo comprimido existe en la máquina local
 - name: Verify compressed file on local machine
   ansible.builtin.stat:
     path: "/tmp/must-gather.tar.gz"
@@ -146,7 +147,7 @@
       - "Compressed file exists: {{ compressed_file.stat.exists }}"
       - "Compressed file size: {{ compressed_file.stat.size | default(0) }} bytes"
 
-# 🧹 Eliminar los recursos después de la ejecución
+# Eliminar los recursos después de la ejecución
 - name: Cleanup - Delete must-gather pod and namespace
   kubernetes.core.k8s:
     host: "{{ openshift_api_url }}"
